@@ -42,7 +42,6 @@ public class GenericDAO<T, K extends Serializable> implements Operation<T, K> {
                     query += ", ?";
                 }
                 query += ")";
-                System.out.println(query);
                 PreparedStatement statement = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
                 int i = 1;
                 for (Method method : GET_METHODS) {
@@ -111,7 +110,6 @@ public class GenericDAO<T, K extends Serializable> implements Operation<T, K> {
                     i++;
                 }
                 statement.setObject(i, GET_ID_METHOD.invoke(transientObject));
-                System.out.println(query);
                 result = statement.executeUpdate() > 0;
                 con.commit();
                 return result;

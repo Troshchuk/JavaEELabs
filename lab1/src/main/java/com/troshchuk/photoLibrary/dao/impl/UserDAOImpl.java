@@ -1,15 +1,10 @@
 package com.troshchuk.photoLibrary.dao.impl;
 
-import com.troshchuk.photoLibrary.annotation.Table;
 import com.troshchuk.photoLibrary.dao.UserDAO;
-import com.troshchuk.photoLibrary.domain.Role;
 import com.troshchuk.photoLibrary.domain.User;
 import com.troshchuk.photoLibrary.utils.DatabaseConnection;
 
 import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.Set;
 
 public class UserDAOImpl extends GenericDAO<User, Long> implements UserDAO {
 
