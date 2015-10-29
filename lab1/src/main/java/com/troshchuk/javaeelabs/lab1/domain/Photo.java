@@ -8,12 +8,16 @@ import com.troshchuk.javaeelabs.lab1.annotation.Table;
 public class Photo {
     private long id;
 
+    private String name;
+
     private String source;
 
     public Photo() {
     }
 
-    public Photo(String source) {
+    public Photo(long id, String name, String source) {
+        this.id = id;
+        this.name = name;
         this.source = source;
     }
 
@@ -34,5 +38,14 @@ public class Photo {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    @Column(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

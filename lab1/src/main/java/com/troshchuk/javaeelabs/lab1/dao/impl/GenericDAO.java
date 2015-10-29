@@ -9,6 +9,7 @@ import com.troshchuk.javaeelabs.lab1.utils.HelpUtils;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GenericDAO<T, K extends Serializable> implements Operation<T, K> {
@@ -142,6 +143,32 @@ public class GenericDAO<T, K extends Serializable> implements Operation<T, K> {
             closeConnection();
         }
         return result;
+    }
+
+    public List<T> read() {
+        List<T> resultList = new ArrayList<T>();
+
+        try {
+            con = DatabaseConnection.getConnection();
+            if (con != null) {
+                PreparedStatement statement = con.prepareStatement("SELECT " + columnsToString() + " FROM " + TABLE_NAME);
+                ResultSet rs = statement.executeQuery();
+
+                while (rs.next()) {
+                    T newInstance = type.newInstance();
+                    for (int i = 0; i < GET_METHODS.size(); i++) {
+                        SET_METHODS.get(i).invoke(newInstance, rs.getObject(COLUMNS.get(i)));
+                    }
+                    resultList.add(newInstance);
+                }
+            }
+        } catch (Exception e) {
+            rollback();
+        } finally {
+            closeConnection();
+        }
+
+        return resultList;
     }
 
     protected String columnsToString() {

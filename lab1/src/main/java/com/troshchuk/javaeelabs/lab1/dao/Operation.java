@@ -2,10 +2,12 @@ package com.troshchuk.javaeelabs.lab1.dao;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.List;
 
 public interface Operation<T, K extends Serializable> {
-    K create(T newInstance) throws SQLException;
-    T read(K id) throws SQLException;
-    boolean update(T transientObject) throws SQLException;
-    boolean delete(K persistentObject) throws SQLException;
+    K create(T newInstance);
+    T read(K id);
+    boolean update(T transientObject);
+    boolean delete(K persistentObject);
+    List<T> read();
 }
