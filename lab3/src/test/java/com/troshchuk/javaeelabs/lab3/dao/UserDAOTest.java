@@ -1,8 +1,7 @@
-package com.troshchuk.javaeelabs.lab1.dao;
+package com.troshchuk.javaeelabs.lab3.dao;
 
-import com.troshchuk.javaeelabs.lab1.dao.UserDAO;
-import com.troshchuk.javaeelabs.lab1.dao.impl.UserDAOImpl;
-import com.troshchuk.javaeelabs.lab1.domain.User;
+import com.troshchuk.javaeelabs.lab3.dao.jpa.UserDAOImpl;
+import com.troshchuk.javaeelabs.lab3.domain.User;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +11,7 @@ import java.sql.SQLException;
 import static org.junit.Assert.*;
 
 public class UserDAOTest {
-    private UserDAO userDAO = new UserDAOImpl();
+    private com.troshchuk.javaeelabs.lab3.dao.UserDAO userDAO = new UserDAOImpl();
     private long id;
     private String email = "example@example.com";
 

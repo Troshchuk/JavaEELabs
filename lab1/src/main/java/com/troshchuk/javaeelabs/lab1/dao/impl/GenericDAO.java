@@ -1,5 +1,6 @@
 package com.troshchuk.javaeelabs.lab1.dao.impl;
 
+import com.troshchuk.javaeelabs.lab1.annotation.Id;
 import com.troshchuk.javaeelabs.lab1.dao.Operation;
 import com.troshchuk.javaeelabs.lab1.utils.DatabaseConnection;
 import com.troshchuk.javaeelabs.lab1.annotation.Column;
@@ -33,7 +34,7 @@ public class GenericDAO<T, K extends Serializable> implements Operation<T, K> {
         COLUMNS = HelpUtils.toColumns(GET_METHODS);
     }
 
-    public K create(T newInstance) {
+    public T create(T newInstance) {
         try {
             con = DatabaseConnection.getConnection();
             if (con != null) {
@@ -58,9 +59,16 @@ public class GenericDAO<T, K extends Serializable> implements Operation<T, K> {
                 rs.next();
                 K id = (K) rs.getObject(1);
 
+                for (int j = 0; j < GET_METHODS.size(); j++) {
+                    if (GET_METHODS.get(j).isAnnotationPresent(Id.class)) {
+                        SET_METHODS.get(j).invoke(newInstance, id);
+                        break;
+                    }
+                }
+
                 con.commit();
 
-                return id;
+                return newInstance;
             }
         } catch (Exception e) {
             rollback();
@@ -123,7 +131,7 @@ public class GenericDAO<T, K extends Serializable> implements Operation<T, K> {
         return result;
     }
 
-    public boolean delete(K persistentObject) {
+    public void delete(K persistentObject) {
         boolean result = false;
         try {
             con = DatabaseConnection.getConnection();
@@ -135,14 +143,13 @@ public class GenericDAO<T, K extends Serializable> implements Operation<T, K> {
 
                 result = statement.executeUpdate() > 0;
                 con.commit();
-                return result;
+                return;
             }
         } catch (Exception e) {
             rollback();
         } finally {
             closeConnection();
         }
-        return result;
     }
 
     public List<T> read() {
